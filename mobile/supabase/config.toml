@@ -1,0 +1,82 @@
+# Supabase project config — Hawaii DOE App
+project_id = "hoekfbthwfzudjsipvkx"
+
+[api]
+enabled = true
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "finskillpath://"
+additional_redirect_urls = [
+  "finskillpath://auth/callback",
+  "finskillpath://reset-password",
+  "exp://127.0.0.1:8081/--/auth/callback",
+  "exp://127.0.0.1:8081/--/reset-password",
+  "exp://localhost:8081/--/auth/callback",
+  "exp://localhost:8081/--/reset-password",
+  "exp://**/--/auth/callback",
+  "exp://**/--/reset-password",
+]
+jwt_expiry = 900            # 15 minutes (per CLAUDE.md security rules)
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+minimum_password_length = 10
+password_requirements = "lower_upper_letters_digits"
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "1m0s"
+otp_length = 8
+otp_expiry = 3600
+
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[auth.email.template.confirmation]
+subject = "Confirm your Hawaii DOE App account"
+
+[auth.email.template.recovery]
+subject = "Reset your Hawaii DOE App password"
+
+# Rate limits — tighten on auth-sensitive endpoints
+[auth.rate_limit]
+email_sent = 4              # per hour
+sms_sent = 4                # per hour
+sign_in_sign_ups = 30       # per 5 minutes
+token_refresh = 150         # per 5 minutes
+token_verifications = 30    # per 5 minutes
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[edge_runtime]
+enabled = true
+inspector_port = 8083
+
+# grade-quiz verifies the caller itself via auth.getUser() using the
+# user JWT, so gateway JWT verify is turned off. Required because this
+# project issues ES256 (asymmetric) tokens, which the Edge Functions
+# gateway doesn't support — it rejects with UNAUTHORIZED_UNSUPPORTED_TOKEN_ALGORITHM.
+[functions.grade-quiz]
+verify_jwt = false

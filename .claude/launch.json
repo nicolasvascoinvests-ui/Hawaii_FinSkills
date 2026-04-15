@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "expo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--port", "8081"],
+      "port": 8081,
+      "cwd": "mobile"
+    },
+    {
+      "name": "vite",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "8080"],
+      "port": 8080,
+      "cwd": "finskill-path"
+    },
+    {
+      "name": "supabase",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["supabase", "start"],
+      "port": 54323,
+      "cwd": "mobile"
+    }
+  ]
+}

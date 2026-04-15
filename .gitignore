@@ -1,0 +1,69 @@
+# Reference-only app — not shipped
+finskill-path/
+
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*/.env
+*/.env.local
+*/.env.*.local
+
+# Expo
+.expo/
+*/.expo/
+dist/
+*/dist/
+web-build/
+*/web-build/
+expo-env.d.ts
+
+# Native signing / builds
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+mobile/ios/
+mobile/android/
+*.orig.*
+.kotlin/
+.metro-health-check*
+
+# Lockfile dupes
+bun.lockb
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test / coverage
+coverage/
+*/coverage/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+*/supabase/.branches/
+*/supabase/.temp/
+
+# Claude local settings (keep shared config)
+.claude/settings.local.json
+**/.claude/settings.local.json
