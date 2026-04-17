@@ -67,3 +67,9 @@ supabase/.temp/
 # Claude local settings (keep shared config)
 .claude/settings.local.json
 **/.claude/settings.local.json
+
+# Brand assets & marketing materials (keep local only)
+mobile/Brand Assets/
+mobile/app_screenshot_*.png
+mobile/Hawaii_Teen_Financial_Literacy_App_Brochure.docx
+mobile/Hawaii_Teen_Financial_Literacy_App_OnePager.pdf
