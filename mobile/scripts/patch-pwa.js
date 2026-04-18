@@ -8,7 +8,20 @@
 const fs = require('fs');
 const path = require('path');
 
-const indexPath = path.join(__dirname, '..', 'dist', 'index.html');
+const distDir = path.join(__dirname, '..', 'dist');
+const publicDir = path.join(__dirname, '..', 'public');
+
+// Copy manifest.json and sw.js to dist if missing
+for (const file of ['manifest.json', 'sw.js']) {
+  const src = path.join(publicDir, file);
+  const dest = path.join(distDir, file);
+  if (fs.existsSync(src) && !fs.existsSync(dest)) {
+    fs.copyFileSync(src, dest);
+    console.log(`Copied ${file} to dist/`);
+  }
+}
+
+const indexPath = path.join(distDir, 'index.html');
 let html = fs.readFileSync(indexPath, 'utf-8');
 
 // Skip if already patched
