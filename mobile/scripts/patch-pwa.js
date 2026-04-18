@@ -21,6 +21,21 @@ for (const file of ['manifest.json', 'sw.js']) {
   }
 }
 
+// Copy icon assets to dist/icons/ for PWA manifest
+const assetsDir = path.join(__dirname, '..', 'assets');
+const iconsDestDir = path.join(distDir, 'icons');
+if (!fs.existsSync(iconsDestDir)) {
+  fs.mkdirSync(iconsDestDir, { recursive: true });
+}
+for (const file of ['icon.png', 'adaptive-icon.png', 'favicon.png']) {
+  const src = path.join(assetsDir, file);
+  const dest = path.join(iconsDestDir, file);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, dest);
+    console.log(`Copied ${file} to dist/icons/`);
+  }
+}
+
 const indexPath = path.join(distDir, 'index.html');
 let html = fs.readFileSync(indexPath, 'utf-8');
 
@@ -34,10 +49,11 @@ if (html.includes('manifest.json')) {
 const pwaMeta = `
     <meta name="theme-color" content="#0B5E8C" />
     <meta name="description" content="Hawaiʻi DOE financial literacy app teaching all 30 standards of the Personal Transition Plan requirement." />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="FinSkill" />
-    <link rel="apple-touch-icon" href="/assets/icon.png" />
+    <link rel="apple-touch-icon" href="/icons/icon.png" />
     <link rel="manifest" href="/manifest.json" />`;
 
 html = html.replace('</head>', pwaMeta + '\n  </head>');
