@@ -1,4 +1,4 @@
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Platform } from 'react-native';
 import { LogOut, GraduationCap, Mail, School, User } from 'lucide-react-native';
 import Screen from '../components/Screen';
 import Button from '../components/Button';
@@ -10,6 +10,13 @@ export default function ProfileScreen() {
   const { profile } = useProfile();
 
   const handleSignOut = () => {
+    // Alert.alert is a no-op on react-native-web, so use the browser confirm there.
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && window.confirm('Are you sure you want to sign out?')) {
+        signOut();
+      }
+      return;
+    }
     Alert.alert('Sign out', 'Are you sure you want to sign out?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Sign out', style: 'destructive', onPress: () => signOut() },
