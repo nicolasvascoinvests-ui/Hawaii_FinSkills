@@ -7,27 +7,30 @@
 -- is set at insert time).
 --
 --   Email:    Admin@useraccount.com
---   Password: 123useraccount
+--   Password: 123Admin!
 --
--- How to run:
---   Supabase Dashboard -> SQL Editor -> New query -> paste this file ->
---   Run. It is idempotent — re-running deletes the previous demo user
---   (and all their data, via ON DELETE CASCADE) and recreates them
---   cleanly.
+-- How to run (pick one):
+--   A) Supabase Dashboard -> SQL Editor -> New query -> paste this file
+--      -> Run.
+--   B) CLI (from repo /mobile dir, with project linked):
+--      supabase db query --linked --file supabase/scripts/seed_demo_account.sql
 --
--- Notes:
---   * Role stays 'student' so the demo experience matches a real user.
---   * Some lesson progress, standard mastery, achievements, and a
---     streak are seeded so the dashboard is not empty on first login.
---   * The email is not real — do not rely on password reset emails.
---     To rotate the password, just re-run this script with a new value
---     in the `demo_password` variable below.
+-- Idempotent — re-running deletes the previous demo user (and all their
+-- data, via ON DELETE CASCADE) and recreates them cleanly.
+--
+-- Implementation note:
+--   We set session_replication_role='replica' during the seed so
+--   user-defined triggers (rate limiters, username enforcement, etc.)
+--   do not fire — those triggers assume an authenticated session, which
+--   does not exist when the script runs via CLI or the SQL Editor.
+--   Because that also skips the on_auth_user_created trigger, we insert
+--   the profiles row manually.
 -- =====================================================================
 
 DO $demo$
 DECLARE
   demo_email    text := 'Admin@useraccount.com';
-  demo_password text := '123useraccount';
+  demo_password text := '123Admin!';
   demo_user_id  uuid := 'd0000000-0000-4000-8000-000000000001';
   hashed_pw     text;
 BEGIN
@@ -35,6 +38,10 @@ BEGIN
   DELETE FROM auth.users WHERE lower(email) = lower(demo_email);
 
   hashed_pw := crypt(demo_password, gen_salt('bf'));
+
+  -- Skip user-defined triggers (rate limiters, username enforcement,
+  -- updated_at, on_auth_user_created) for the duration of this block.
+  SET LOCAL session_replication_role = 'replica';
 
   -- -------------------------------------------------------------------
   -- auth.users — the actual login record. email_confirmed_at = now()
@@ -76,18 +83,16 @@ BEGIN
   );
 
   -- -------------------------------------------------------------------
-  -- The on_auth_user_created trigger has already inserted a profile
-  -- row. Fill in the demo-friendly fields. 'admin' / 'demo' usernames
-  -- are reserved, so we use 'doe_demo'.
+  -- public.profiles — normally auto-populated by the
+  -- on_auth_user_created trigger, but that trigger is skipped while
+  -- session_replication_role = 'replica', so insert it explicitly.
   -- -------------------------------------------------------------------
-  UPDATE public.profiles
-     SET username             = 'doe_demo',
-         display_name         = 'DOE Demo',
-         age_tier             = '18_plus',
-         birth_year           = 1990,
-         preferred_language   = 'en',
-         onboarding_completed = true
-   WHERE user_id = demo_user_id;
+  INSERT INTO public.profiles
+    (user_id, username, display_name, role, age_tier, birth_year,
+     preferred_language, onboarding_completed, created_at, updated_at)
+  VALUES
+    (demo_user_id, 'doe_demo', 'DOE Demo', 'student', '18_plus', 1990,
+     'en', true, now(), now());
 
   -- -------------------------------------------------------------------
   -- Seed realistic progress: first two lessons of "Earning Income 101"
@@ -98,8 +103,7 @@ BEGIN
   VALUES
     (demo_user_id, 'a0000001-0001-0000-0000-000000000001', 'completed',    92, 1,  540, now() - interval '6 days', now() - interval '6 days'),
     (demo_user_id, 'a0000001-0002-0000-0000-000000000001', 'completed',    88, 2,  720, now() - interval '4 days', now() - interval '3 days'),
-    (demo_user_id, 'a0000001-0003-0000-0000-000000000001', 'in_progress', NULL, 1,  180, now() - interval '1 day',  NULL)
-  ON CONFLICT (user_id, lesson_id) DO NOTHING;
+    (demo_user_id, 'a0000001-0003-0000-0000-000000000001', 'in_progress', NULL, 1,  180, now() - interval '1 day',  NULL);
 
   -- -------------------------------------------------------------------
   -- Standard mastery — a spread across themes so the dashboard shows
@@ -112,8 +116,7 @@ BEGIN
     (demo_user_id, 'EI-2', 88, 2,  8, 10, now() - interval '3 days'),
     (demo_user_id, 'SP-2', 75, 1,  6,  8, now() - interval '2 days'),
     (demo_user_id, 'SV-1', 60, 1,  3,  5, now() - interval '2 days'),
-    (demo_user_id, 'SV-3', 40, 1,  2,  5, now() - interval '1 day')
-  ON CONFLICT (user_id, standard_code) DO NOTHING;
+    (demo_user_id, 'SV-3', 40, 1,  2,  5, now() - interval '1 day');
 
   -- -------------------------------------------------------------------
   -- A couple of earned badges (codes come from migration 0010 seed).
@@ -122,8 +125,7 @@ BEGIN
   VALUES
     (demo_user_id, 'first_lesson', now() - interval '6 days'),
     (demo_user_id, 'first_quiz',   now() - interval '6 days'),
-    (demo_user_id, 'streak_3',     now() - interval '3 days')
-  ON CONFLICT (user_id, achievement_code) DO NOTHING;
+    (demo_user_id, 'streak_3',     now() - interval '3 days');
 
   -- -------------------------------------------------------------------
   -- Streak + points so the home screen has a visible streak number.
@@ -131,12 +133,7 @@ BEGIN
   INSERT INTO public.user_streaks
     (user_id, current_streak, longest_streak, last_active_date, total_points)
   VALUES
-    (demo_user_id, 4, 4, CURRENT_DATE, 45)
-  ON CONFLICT (user_id) DO UPDATE
-    SET current_streak   = EXCLUDED.current_streak,
-        longest_streak   = EXCLUDED.longest_streak,
-        last_active_date = EXCLUDED.last_active_date,
-        total_points     = EXCLUDED.total_points;
+    (demo_user_id, 4, 4, CURRENT_DATE, 45);
 
   RAISE NOTICE 'Demo account ready: % (id %)', demo_email, demo_user_id;
 END
