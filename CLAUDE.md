@@ -1,11 +1,11 @@
 # Hawaii_Client — Financial Literacy Educational App
 
-A mobile educational application for the **Hawaii Department of Education** teaching financial literacy to teens and adults. Built with React Native + Supabase. Uses a spec-driven development workflow with automated verification at every step.
+A mobile educational application teaching financial literacy to teens and adults in Hawaiʻi. Built with React Native + Supabase. Uses a spec-driven development workflow with automated verification at every step.
 
-**Client**: Hawaii Department of Education (DOE)
 **Audience**: Teens (14–17) and Adults (18+). Minimum registration age is 14.
 **Purpose**: Interactive financial literacy courses — budgeting, saving, investing, credit, taxes, and money management
-**Compliance**: FERPA (student data), Section 508/ADA (government education), Hawaii state privacy laws. (COPPA does not apply — app is 14+.)
+**Compliance**: FERPA (student data), Section 508/ADA, Hawaii state privacy laws. (COPPA does not apply — app is 14+.)
+**Note**: This app is NOT affiliated with or endorsed by the Hawaiʻi Department of Education. It teaches the same financial literacy program standards (released August 2025) that schools use for the PTP graduation requirement, but it is an independent product.
 
 ---
 
@@ -17,7 +17,7 @@ A mobile educational application for the **Hawaii Department of Education** teac
 - **Styling**: NativeWind (Tailwind CSS for React Native)
 - **Backend**: Supabase (BaaS — Auth, Database, Realtime, Storage, Edge Functions)
 - **Database**: PostgreSQL (via Supabase) + SQLite (local offline cache via expo-sqlite)
-- **Auth**: Supabase Auth (email/password, SSO for DOE staff)
+- **Auth**: Supabase Auth (email/password)
 - **Testing**: Jest + React Native Testing Library + Detox (E2E)
 - **CI/CD**: EAS Build + EAS Submit (Expo Application Services)
 - **Linting**: ESLint + Prettier + TypeScript strict mode
@@ -161,11 +161,11 @@ A mobile educational application for the **Hawaii Department of Education** teac
 
 ---
 
-## Hawaii DOE Financial Literacy Program Standards (August 2025)
+## Hawaiʻi Financial Literacy Program Standards (August 2025)
 
-All course content, lessons, quizzes, and interactive tools in this app **must align** to the Hawaii DOE Financial Literacy Program Standards (released August 2025). These are derived from the 2021 National Standards for Personal Finance Education (Council for Economic Education + Jump$tart Coalition). The source document is at `Financial-Literacy-Standards.pdf` in the project root.
+All course content, lessons, quizzes, and interactive tools in this app **must align** to the Hawaiʻi Financial Literacy Program Standards (released August 2025). These are derived from the 2021 National Standards for Personal Finance Education (Council for Economic Education + Jump$tart Coalition). The source document is at `Financial-Literacy-Standards.pdf` in the project root.
 
-### How Financial Literacy Fits Into DOE Graduation Requirements
+### How Financial Literacy Fits Into Graduation Requirements
 - **PTP (Personal Transition Plan)** is the central mechanism — a required **0.5-credit course** where financial literacy completion is tracked
 - Financial literacy is **NOT a separate credit** — it is documented within the PTP requirement
 - Schools have flexible delivery: standalone courses, integration into existing courses, or **self-paced learning**
@@ -253,7 +253,7 @@ Every course, lesson, and quiz must map to one or more standard codes. Themes do
 
 ### Content & Learning
 - Structure courses in progressive difficulty: Beginner -> Intermediate -> Advanced
-- **All content must align to the DOE Financial Literacy Standards (6 themes, 30 standards above)**
+- **All content must align to the Hawaiʻi Financial Literacy Standards (6 themes, 30 standards above)**
 - Age-tiered content delivery:
   - **Teens (14–17)**: Budgeting, bank accounts, part-time job income, credit basics, avoiding scams. Interactive simulations. Cover all 6 themes with teen-appropriate depth
   - **Adults (18+)**: Investing, taxes, retirement (401k/IRA), credit scores, mortgages, debt management, Hawaii cost-of-living specifics. Full coverage of all 30 standards
@@ -277,7 +277,7 @@ Every course, lesson, and quiz must map to one or more standard codes. Themes do
 ### User Roles & Permissions
 - **Student**: Takes courses, completes exercises, tracks personal progress
 - **Teacher/Educator**: Assigns courses, views class progress, manages student groups
-- **DOE Admin**: Manages content, views aggregate analytics, manages educators
+- **Admin**: Manages content, views aggregate analytics, manages educators
 - Role-based access enforced server-side via Supabase RLS policies
 
 ### Accessibility (Mandatory — Section 508/ADA)
@@ -389,7 +389,7 @@ After GSD completes any phase or task, the following verification agents run **a
 | Last | **debugger** | Investigates and fixes bugs flagged by any agent above | When issues are flagged |
 
 ### Pipeline Rules
-- Agents 1-7 and 12 (compliance) run on **every** change — no exceptions (compliance is critical for DOE/FERPA)
+- Agents 1-7 and 12 (compliance) run on **every** change — no exceptions (FERPA compliance is critical)
 - Agents 8-11 run based on change type (UI, integration, structural, UX)
 - Penetration tester runs pre-launch and on auth/data changes
 - Debugger runs last, only when other agents flag issues
@@ -545,7 +545,7 @@ parental_consents  — id, child_id, parent_id, consent_given, consent_date, con
 courses            — id, title, description, age_tier, category, difficulty, order, is_published, standards_covered (text[] — e.g., ['EI-1','EI-2','SP-2'])
 lessons            — id, course_id, title, content_json, lesson_type, order, duration_minutes, standards_covered (text[] — primary standards this lesson teaches)
 quizzes            — id, lesson_id, questions_json, passing_score, max_attempts
-quiz_questions     — id, quiz_id, question_json, standard_code (text — maps question to specific DOE standard)
+quiz_questions     — id, quiz_id, question_json, standard_code (text — maps question to specific financial literacy standard)
 user_progress      — id, user_id, lesson_id, status (not_started|in_progress|completed), score, completed_at
 standard_mastery   — id, user_id, standard_code, mastery_level (0-100), attempts, last_assessed_at
 achievements       — id, user_id, badge_type, earned_at, metadata
@@ -587,4 +587,4 @@ All tables use Supabase Row Level Security (RLS) policies. Students see only the
 8. **Offline Support** — Content caching, progress sync, offline calculators
 9. **Accessibility Audit** — Section 508 compliance pass, VPAT preparation
 10. **Security & Compliance** — Penetration testing, FERPA audit, data review
-11. **Polish & Launch** — Performance optimization, app store assets, DOE review
+11. **Polish & Launch** — Performance optimization, app store assets, final review

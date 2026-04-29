@@ -1,8 +1,8 @@
 -- =====================================================================
--- Demo account seed — Hawaii DOE Financial Literacy app
+-- Demo account seed — FinSkill Path
 -- =====================================================================
 --
--- Creates a ready-to-use demo login for the DOE client to try the app
+-- Creates a ready-to-use demo login so reviewers can try the app
 -- before purchase. Email confirmation is bypassed (email_confirmed_at
 -- is set at insert time).
 --
@@ -62,7 +62,7 @@ BEGIN
     hashed_pw,
     now(),
     jsonb_build_object('provider','email','providers', jsonb_build_array('email')),
-    jsonb_build_object('display_name','DOE Demo','age_tier','18_plus'),
+    jsonb_build_object('display_name','Demo User','age_tier','18_plus'),
     now(), now(), '', '', '', ''
   );
 
@@ -91,7 +91,7 @@ BEGIN
     (user_id, username, display_name, role, age_tier, birth_year,
      preferred_language, onboarding_completed, created_at, updated_at)
   VALUES
-    (demo_user_id, 'doe_demo', 'DOE Demo', 'student', '18_plus', 1990,
+    (demo_user_id, 'demo_user', 'Demo User', 'student', '18_plus', 1990,
      'en', true, now(), now());
 
   -- -------------------------------------------------------------------

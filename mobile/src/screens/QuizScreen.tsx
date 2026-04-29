@@ -12,8 +12,12 @@ import {
 } from 'lucide-react-native';
 import Screen from '../components/Screen';
 import Button from '../components/Button';
+import LessonCertificate from '../components/LessonCertificate';
+import Struggalo from '../components/Struggalo';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
+import { useProfile } from '../hooks/useProfile';
+import { useCourseCompletion } from '../hooks/useCourseCompletion';
 import type { QuizQuestion } from '../types/database';
 import type { RootStackScreenProps } from '../navigation/types';
 
@@ -90,6 +94,7 @@ function interleaveByType(questions: QuizQuestion[]): QuizQuestion[] {
 export default function QuizScreen({ route, navigation }: RootStackScreenProps<'Quiz'>) {
   const { lessonId } = route.params;
   const { user } = useAuth();
+  const { profile } = useProfile();
   const queryClient = useQueryClient();
 
   const [currentQ, setCurrentQ] = useState(0);
@@ -128,6 +133,8 @@ export default function QuizScreen({ route, navigation }: RootStackScreenProps<'
       return data;
     },
   });
+
+  const courseCompletion = useCourseCompletion(lesson?.course_id ?? null);
 
   const { data: lastAttempt } = useQuery({
     queryKey: ['quiz-cooldown', lessonId, user?.id],
@@ -232,6 +239,7 @@ export default function QuizScreen({ route, navigation }: RootStackScreenProps<'
       setGradeResult(data);
       queryClient.invalidateQueries({ queryKey: ['mastery'] });
       queryClient.invalidateQueries({ queryKey: ['quiz-cooldown', lessonId, user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['course-completion'] });
     },
     onError: (err: Error) => {
       if (err.message.startsWith('__COOLDOWN__')) {
@@ -388,8 +396,16 @@ export default function QuizScreen({ route, navigation }: RootStackScreenProps<'
     const total = gradeResult?.total ?? answers.length;
     const pct = gradeResult?.pct ?? 0;
     const serverResults = gradeResult?.results ?? [];
+    const isPerfect = total > 0 && score === total;
     const headline =
       pct >= 90 ? '🎉 Amazing!' : pct >= 70 ? '👏 Great job!' : pct >= 50 ? '💪 Good effort!' : '📚 Keep learning!';
+    const learnerName =
+      profile?.display_name?.trim() ||
+      (user?.email ? user.email.split('@')[0] : 'Learner');
+    const showCertificate =
+      !courseCompletion.isLoading &&
+      courseCompletion.isCourseComplete &&
+      !!courseCompletion.course;
 
     return (
       <Screen>
@@ -412,6 +428,16 @@ export default function QuizScreen({ route, navigation }: RootStackScreenProps<'
               {score}/{total}
             </Text>
             <Text className="text-muted-foreground text-sm mb-6">{pct}% correct</Text>
+
+            {isPerfect ? (
+              <View className="w-full mb-4">
+                <Struggalo learnerName={learnerName} variant="defeated" />
+              </View>
+            ) : pct < 70 ? (
+              <View className="w-full mb-4">
+                <Struggalo learnerName={learnerName} variant="taunting" />
+              </View>
+            ) : null}
 
             <View className="w-full gap-2 mb-6">
               {serverResults.map((r, i) => {
@@ -438,6 +464,26 @@ export default function QuizScreen({ route, navigation }: RootStackScreenProps<'
                 );
               })}
             </View>
+
+            {showCertificate && courseCompletion.course ? (
+              <View className="w-full mb-2">
+                <LessonCertificate
+                  learnerName={learnerName}
+                  courseTitle={courseCompletion.course.title}
+                  standards={courseCompletion.course.standards_covered}
+                />
+              </View>
+            ) : !isPerfect && courseCompletion.totalLessons > 0 ? (
+              <View className="w-full mb-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                <Text className="text-sm font-semibold text-amber-700 mb-1">
+                  Score 100% to count toward your certificate
+                </Text>
+                <Text className="text-xs text-amber-700/80">
+                  {courseCompletion.perfectLessons}/{courseCompletion.totalLessons} lessons aced
+                  in this course. Retake this quiz in 1 hour to push this lesson to 100%.
+                </Text>
+              </View>
+            ) : null}
 
             <View className="flex-row items-center gap-1 mb-6">
               <Clock color="#676D76" size={12} />

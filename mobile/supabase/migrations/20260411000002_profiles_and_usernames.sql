@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS public.reserved_usernames (
 
 INSERT INTO public.reserved_usernames (username) VALUES
   ('admin'),('administrator'),('root'),('support'),('help'),
-  ('doe'),('hawaiidoe'),('hidoe'),('hawaii'),('teacher'),('educator'),
+  ('hawaii'),('teacher'),('educator'),
   ('parent'),('student'),('moderator'),('mod'),('staff'),('owner'),
   ('system'),('null'),('undefined'),('anonymous'),('user'),('guest'),
   ('test'),('demo'),('official')

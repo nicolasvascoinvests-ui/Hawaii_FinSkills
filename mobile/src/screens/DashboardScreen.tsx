@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowRight, Zap, Sparkles, Trophy, Star, Flame } from 'lucide-react-native';
 import Screen from '../components/Screen';
 import ProgressRing from '../components/ProgressRing';
+import StruggaloMeter from '../components/StruggaloMeter';
 import { THEMES } from '../lib/standards';
 import { useMastery } from '../hooks/useMastery';
 import { useProfile } from '../hooks/useProfile';
@@ -87,11 +88,15 @@ export default function DashboardScreen({ navigation }: MainTabScreenProps<'Dash
           <Text className="text-muted-foreground text-sm">{encouragement}</Text>
         </MotiView>
 
+        <View className="mt-5">
+          <StruggaloMeter />
+        </View>
+
         <MotiView
           from={{ opacity: 0, translateY: 10 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ delay: 50 }}
-          className="flex-row gap-3 my-5"
+          className="flex-row gap-3 mb-5"
         >
           <View className="flex-1 bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex-row items-center gap-3">
             <Flame color="#F59E0B" size={24} />

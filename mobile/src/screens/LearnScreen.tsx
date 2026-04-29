@@ -177,8 +177,19 @@ export default function LearnScreen({ route, navigation }: MainTabScreenProps<'L
                               ~{lessonCount * 5} min
                             </Text>
                           </View>
-                          <Text className="text-xs font-medium text-jade">
+                          <Text
+                            className={`text-xs font-medium ${
+                              prog.total === 0
+                                ? 'text-muted-foreground'
+                                : prog.mastered >= prog.total
+                                  ? 'text-jade'
+                                  : prog.mastered > 0
+                                    ? 'text-amber-600'
+                                    : 'text-muted-foreground'
+                            }`}
+                          >
                             {prog.mastered}/{prog.total} mastered
+                            {prog.total > 0 && prog.mastered < prog.total ? ' — keep going' : ''}
                           </Text>
                         </View>
                       </View>

@@ -48,7 +48,7 @@ if (html.includes('manifest.json')) {
 // Inject PWA meta tags before </head>
 const pwaMeta = `
     <meta name="theme-color" content="#0B5E8C" />
-    <meta name="description" content="Hawaiʻi DOE financial literacy app teaching all 30 standards of the Personal Transition Plan requirement." />
+    <meta name="description" content="Hawaiʻi financial literacy app teaching all 30 standards of the Personal Transition Plan requirement." />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

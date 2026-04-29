@@ -1,4 +1,4 @@
-# Supabase project config — Hawaii DOE App
+# Supabase project config — FinSkill Path
 project_id = "hoekfbthwfzudjsipvkx"
 
 [api]
@@ -53,10 +53,10 @@ enroll_enabled = true
 verify_enabled = true
 
 [auth.email.template.confirmation]
-subject = "Confirm your Hawaii DOE App account"
+subject = "Confirm your FinSkill Path account"
 
 [auth.email.template.recovery]
-subject = "Reset your Hawaii DOE App password"
+subject = "Reset your FinSkill Path password"
 
 # Rate limits — tighten on auth-sensitive endpoints
 [auth.rate_limit]

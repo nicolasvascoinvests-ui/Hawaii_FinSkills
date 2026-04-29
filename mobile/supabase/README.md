@@ -1,14 +1,14 @@
-# Supabase — Hawaii DOE App
+# Supabase — FinSkill Path
 
 Database schema, RLS policies, triggers, and storage configuration for the
-Hawaii DOE Financial Literacy mobile app's Supabase backend.
+Hawaiʻi Financial Literacy mobile app's Supabase backend.
 
 ## Layout
 
 ```
 supabase/
 ├── config.toml                # Supabase CLI project config (project_ref + auth)
-├── seed.sql                   # DOE standards + achievement definitions
+├── seed.sql                   # Financial literacy standards + achievement definitions
 ├── migrations/
 │   ├── 20260411000001_init_extensions_and_helpers.sql
 │   ├── 20260411000002_profiles_and_usernames.sql
@@ -26,7 +26,7 @@ supabase/
 | Area              | Tables / objects |
 |-------------------|------------------|
 | Auth & users      | `profiles` (with usernames, citext + reserved list + validation), auto-create trigger |
-| Courses           | `doe_standards`, `courses`, `lessons`, `quiz_questions` |
+| Courses           | `standards`, `courses`, `lessons`, `quiz_questions` |
 | Progress          | `user_progress`, `standard_mastery`, `quiz_attempts` (auto-rolls into mastery) |
 | Classes           | `classes`, `class_members`, `assignments`, `assignment_submissions` |
 | Gamification      | `achievement_definitions`, `user_achievements`, `user_streaks` |
@@ -40,15 +40,15 @@ is granted explicitly:
 - Educators see students enrolled in classes they own.
 - Admins see everything (via the `has_role()` SECURITY DEFINER helper).
 
-## Apply to the "Hawaii DOE App" project
+## Apply to the Supabase project
 
 ### One-time setup
 
 1. Install the Supabase CLI: <https://supabase.com/docs/guides/cli>
-2. From the Supabase dashboard for the *Hawaii DOE App* project, copy
+2. From the Supabase dashboard for the project, copy
    **Project Reference ID** (Project Settings → General).
 3. Open `supabase/config.toml` and replace
-   `REPLACE_WITH_HAWAII_DOE_APP_PROJECT_REF` with that ref.
+   `REPLACE_WITH_PROJECT_REF` with that ref.
 4. Log in and link the project:
 
 ```bash
@@ -89,7 +89,7 @@ npx expo start -c
 
 - Stored as `citext` so "Alex" and "alex" cannot both exist.
 - 3–20 characters, only `[A-Za-z0-9_-]`, never all-numeric.
-- Reserved words (admin, doe, hawaii, ...) are blocked via the
+- Reserved words (admin, hawaii, ...) are blocked via the
   `reserved_usernames` table.
 - A `BEFORE INSERT/UPDATE` trigger enforces every rule server-side.
 - Signup screens can call `is_username_available(username)` over RPC
@@ -119,7 +119,7 @@ Run these in the SQL editor and confirm each returns rows you expect:
 
 ```sql
 -- 30 standards loaded?
-SELECT count(*) FROM public.doe_standards;             -- expect 30
+SELECT count(*) FROM public.standards;                 -- expect 30
 
 -- RLS enabled on every public table?
 SELECT relname FROM pg_class c

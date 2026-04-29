@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import type { RootStackScreenProps } from '../navigation/types';
 
 const FEATURES = [
-  { Icon: BookOpen, title: '30 Standards', desc: 'Master all Hawaii DOE financial literacy standards' },
+  { Icon: BookOpen, title: '30 Standards', desc: 'Master all Hawaiʻi financial literacy standards' },
   { Icon: Shield, title: 'PTP Ready', desc: 'Complete your Personal Transition Plan requirement' },
   { Icon: Award, title: 'Track Progress', desc: 'Visual dashboard shows your mastery journey' },
 ];
@@ -23,7 +23,7 @@ export default function WelcomeScreen({ navigation }: RootStackScreenProps<'Welc
         >
           <View className="bg-white/10 rounded-full px-4 py-1.5 mb-6 flex-row items-center gap-2">
             <Text className="text-white text-xs">🌺</Text>
-            <Text className="text-white text-xs">Hawaiʻi DOE Financial Literacy</Text>
+            <Text className="text-white text-xs">Hawaiʻi Financial Literacy</Text>
           </View>
           <Text className="text-3xl font-bold text-white text-center mb-3">
             Your Money,{'\n'}Your Future
@@ -71,7 +71,7 @@ export default function WelcomeScreen({ navigation }: RootStackScreenProps<'Welc
       </View>
 
       <View className="items-center pb-6">
-        <Text className="text-muted-foreground text-sm">Hawaiʻi State Department of Education</Text>
+        <Text className="text-muted-foreground text-sm">Hawaiʻi Financial Literacy</Text>
         <Text className="text-muted-foreground text-xs mt-1">Personal Transition Plan — Financial Literacy</Text>
       </View>
     </Screen>

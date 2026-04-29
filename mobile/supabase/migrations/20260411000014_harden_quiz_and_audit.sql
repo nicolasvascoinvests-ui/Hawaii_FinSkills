@@ -3,7 +3,7 @@
 -- =====================================================================
 -- quiz_attempts: grading moves to the grade-quiz Edge Function (service
 -- role). Revoke client INSERT so a tampered mobile client cannot self-
--- award mastery on all 30 DOE standards.
+-- award mastery on all 30 financial literacy standards.
 --
 -- audit_log: the self-insert policy let any authenticated user forge
 -- FERPA entries under their own user_id. Drop it — only the

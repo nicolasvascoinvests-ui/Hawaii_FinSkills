@@ -1,6 +1,6 @@
 -- =====================================================================
 -- Seed data: Courses, Lessons, and Quiz Questions
--- Covers all 6 themes and all 30 DOE Financial Literacy Standards.
+-- Covers all 6 themes and all 30 Hawaiʻi Financial Literacy Standards.
 -- Safe to re-run — uses ON CONFLICT DO NOTHING.
 -- =====================================================================
 
@@ -260,7 +260,7 @@ INSERT INTO public.quiz_questions (id, lesson_id, question_type, question_text, 
   -- SP-5
   ('b0000002-0005-0001-0000-000000000001', 'a0000002-0005-0000-0000-000000000001', 'multiple_choice',
    'Which Hawaii agency handles consumer protection complaints?',
-   '["FBI","Hawaii Department of Education","Department of Commerce and Consumer Affairs (DCCA)","IRS"]'::jsonb,
+   '["FBI","Hawaii Tourism Authority","Department of Commerce and Consumer Affairs (DCCA)","IRS"]'::jsonb,
    'Department of Commerce and Consumer Affairs (DCCA)',
    'Hawaii''s DCCA houses the Office of Consumer Protection, which handles complaints about unfair business practices, scams, and fraud in the state.',
    'SP-5', 'medium', 1, 1)

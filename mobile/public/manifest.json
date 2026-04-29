@@ -2,7 +2,7 @@
   "name": "FinSkill Path",
   "short_name": "FinSkill",
   "id": "/",
-  "description": "Hawaiʻi DOE financial literacy app teaching all 30 standards of the Personal Transition Plan requirement.",
+  "description": "Hawaiʻi financial literacy app teaching all 30 standards of the Personal Transition Plan requirement.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0B5E8C",

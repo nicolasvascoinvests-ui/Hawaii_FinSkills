@@ -1,12 +1,12 @@
 -- =====================================================================
 -- 004 — Courses, lessons, and quiz questions
--- All content tables map to DOE Financial Literacy standard codes.
+-- All content tables map to Hawaiʻi Financial Literacy standard codes.
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
 -- Standards reference table — populated in seed.sql
 -- ---------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS public.doe_standards (
+CREATE TABLE IF NOT EXISTS public.standards (
   code        TEXT PRIMARY KEY,
   theme_key   TEXT NOT NULL CHECK (theme_key IN ('earning_income','spending','saving','investing','managing_credit','managing_risk')),
   theme_label TEXT NOT NULL,
@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS public.doe_standards (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-ALTER TABLE public.doe_standards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.standards ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "standards_public_read"
-  ON public.doe_standards FOR SELECT
+  ON public.standards FOR SELECT
   USING (true);
 
 -- ---------------------------------------------------------------------
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS public.quiz_questions (
   options         JSONB NOT NULL DEFAULT '[]'::jsonb,
   correct_answer  TEXT NOT NULL,
   explanation     TEXT,
-  standard_code   TEXT NOT NULL REFERENCES public.doe_standards(code),
+  standard_code   TEXT NOT NULL REFERENCES public.standards(code),
   difficulty      TEXT NOT NULL DEFAULT 'medium' CHECK (difficulty IN ('easy','medium','hard')),
   order_index     INTEGER NOT NULL DEFAULT 0,
   points          INTEGER NOT NULL DEFAULT 1 CHECK (points > 0),

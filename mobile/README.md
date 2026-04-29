@@ -1,10 +1,10 @@
 # FinSkill Path — Native Mobile App
 
-Hawaiʻi DOE financial literacy app for the Personal Transition Plan (PTP) requirement. Native React Native + Expo build, targeting iOS App Store and Google Play Store.
+Hawaiʻi financial literacy app for the Personal Transition Plan (PTP) requirement. Native React Native + Expo build, targeting iOS App Store and Google Play Store.
 
 ## Scope
 
-Covers all **30 content standards** across **6 themes** from the Hawaiʻi DOE Financial Literacy Program Standards (released August 2025):
+Covers all **30 content standards** across **6 themes** from the Hawaiʻi Financial Literacy Program Standards (released August 2025):
 
 - **Earning Income** (EI-1…EI-5)
 - **Spending** (SP-1…SP-5)
@@ -40,7 +40,7 @@ mobile/
 ├── global.css                 Tailwind entry
 ├── src/
 │   ├── lib/
-│   │   ├── standards.ts       30 DOE standards × 6 themes
+│   │   ├── standards.ts       30 financial literacy standards × 6 themes
 │   │   ├── supabase.ts        Supabase client with secure-store adapter
 │   │   ├── generateCertificate.ts   PTP certificate via expo-print
 │   │   ├── auditLog.ts        FERPA audit helper
@@ -123,8 +123,8 @@ Before shipping, apply the FERPA audit log migration at `supabase/audit_log.sql`
 
 Bundle identifiers are pre-configured in `app.json`:
 
-- **iOS**: `edu.hawaii.doe.finskillpath`
-- **Android**: `edu.hawaii.doe.finskillpath`
+- **iOS**: `com.finskillpath.app`
+- **Android**: `com.finskillpath.app`
 
 To build for submission:
 
@@ -149,4 +149,4 @@ All interactive elements have `accessibilityRole` and `accessibilityLabel`. Scre
 
 ## Reference
 
-The original Lovable-generated web app lives at `../finskill-path/` as a design and behavioral reference. **Do not ship the web app** — it is not in scope for the DOE deliverable.
+The original Lovable-generated web app lives at `../finskill-path/` as a design and behavioral reference. **Do not ship the web app** — it is not in scope for the deliverable.

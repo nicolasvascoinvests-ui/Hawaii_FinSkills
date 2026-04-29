@@ -1,6 +1,6 @@
 import { THEMES, ALL_STANDARDS, TOTAL_STANDARDS, getThemeByKey, getStandardByCode } from '../lib/standards';
 
-describe('DOE financial literacy standards', () => {
+describe('Hawaiʻi financial literacy standards', () => {
   it('has exactly 6 themes', () => {
     expect(THEMES).toHaveLength(6);
   });
@@ -16,7 +16,7 @@ describe('DOE financial literacy standards', () => {
     });
   });
 
-  it('covers every DOE code: EI-1 through MR-5', () => {
+  it('covers every standard code: EI-1 through MR-5', () => {
     const expected = [
       'EI-1', 'EI-2', 'EI-3', 'EI-4', 'EI-5',
       'SP-1', 'SP-2', 'SP-3', 'SP-4', 'SP-5',

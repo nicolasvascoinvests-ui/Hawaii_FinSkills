@@ -1,6 +1,6 @@
 -- =====================================================================
 -- 001 — Extensions, schemas, and shared helper functions
--- Hawaii DOE Financial Literacy Mobile App
+-- FinSkill Path — Hawaiʻi Financial Literacy Mobile App
 -- =====================================================================
 
 -- Required extensions

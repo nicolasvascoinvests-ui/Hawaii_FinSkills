@@ -1,13 +1,13 @@
 -- =====================================================================
--- Seed data for the Hawaii DOE App Supabase project
+-- Seed data for the FinSkill Path Supabase project
 -- Safe to re-run — uses ON CONFLICT DO NOTHING / DO UPDATE.
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
--- DOE Financial Literacy Standards (August 2025)
+-- Hawaiʻi Financial Literacy Standards (August 2025)
 -- 6 themes, 30 standards
 -- ---------------------------------------------------------------------
-INSERT INTO public.doe_standards (code, theme_key, theme_label, title, description) VALUES
+INSERT INTO public.standards (code, theme_key, theme_label, title, description) VALUES
   -- Theme 1: Earning Income
   ('EI-1', 'earning_income', 'Earning Income', 'Net income & deductions',  'Net income (take-home pay) = wages/salaries minus taxes and payroll deductions'),
   ('EI-2', 'earning_income', 'Earning Income', 'Compensation & benefits',  'Compensation includes wages, salaries, commissions, tips, bonuses, plus benefits'),
@@ -72,7 +72,7 @@ INSERT INTO public.achievement_definitions (code, title, description, icon, cate
   ('mastered_theme_in','Investor',           'Master all 5 Investing standards',        '📈', 'mastery',  100, NULL),
   ('mastered_theme_mc','Credit Captain',     'Master all 5 Managing Credit standards',  '💳', 'mastery',  100, NULL),
   ('mastered_theme_mr','Risk Ranger',        'Master all 5 Managing Risk standards',    '🛡️', 'mastery', 100, NULL),
-  ('all_standards',   'Financial Literacy Champion', 'Master all 30 DOE standards',     '⭐', 'milestone',500, NULL)
+  ('all_standards',   'Financial Literacy Champion', 'Master all 30 financial literacy standards', '⭐', 'milestone',500, NULL)
 ON CONFLICT (code) DO UPDATE SET
   title       = EXCLUDED.title,
   description = EXCLUDED.description,

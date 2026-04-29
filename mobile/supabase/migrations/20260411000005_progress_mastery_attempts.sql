@@ -48,12 +48,12 @@ CREATE POLICY "user_progress_admin_select"
   USING (public.has_role(auth.uid(), 'admin'));
 
 -- ---------------------------------------------------------------------
--- standard_mastery — per user, per DOE standard
+-- standard_mastery — per user, per financial literacy standard
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.standard_mastery (
   id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id           UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  standard_code     TEXT NOT NULL REFERENCES public.doe_standards(code),
+  standard_code     TEXT NOT NULL REFERENCES public.standards(code),
   mastery_level     INTEGER NOT NULL DEFAULT 0 CHECK (mastery_level BETWEEN 0 AND 100),
   attempts          INTEGER NOT NULL DEFAULT 0,
   correct_count     INTEGER NOT NULL DEFAULT 0,
@@ -145,7 +145,7 @@ BEGIN
     END IF;
 
     -- Skip unknown standards (defensive)
-    IF NOT EXISTS (SELECT 1 FROM public.doe_standards WHERE code = rec.standard_code) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.standards WHERE code = rec.standard_code) THEN
       CONTINUE;
     END IF;
 
