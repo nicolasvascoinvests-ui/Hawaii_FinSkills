@@ -116,9 +116,9 @@ export default function ProgressScreen({ navigation }: MainTabScreenProps<'Progr
                 <AnimatePresence>
                   {isExpanded && (
                     <MotiView
-                      from={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
+                      from={{ opacity: 0, translateY: -8 }}
+                      animate={{ opacity: 1, translateY: 0 }}
+                      exit={{ opacity: 0, translateY: -8 }}
                     >
                       <View className="pt-2 gap-2">
                         {theme.standards.map((standard, si) => {
